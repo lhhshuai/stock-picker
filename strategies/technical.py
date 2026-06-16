@@ -16,7 +16,7 @@ class TechnicalStrategy(BaseStrategy):
         self.long_ma = long_ma
 
     def score(self, data: StockData) -> float:
-        if data.daily is None or len(data.daily) < self.long_ma + 10:
+        if data.daily is None or len(data.daily) < 30:
             return 0.0
 
         close = data.daily["close"].values.astype(float)
@@ -106,8 +106,8 @@ class TechnicalStrategy(BaseStrategy):
         return min(100, max(0, score))
 
     def filter(self, data: StockData) -> bool:
-        """基础过滤：股价 > 3 元，上市 > 60 天"""
-        if data.daily is None or len(data.daily) < 60:
+        """基础过滤：股价 > 3 元，至少 20 天数据"""
+        if data.daily is None or len(data.daily) < 20:
             return False
         if data.daily["close"].iloc[-1] < 3:
             return False
